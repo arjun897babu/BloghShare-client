@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.title{
+   @apply bg-gradient-to-bl from-emerald-400 to-emerald-600 bg-clip-text text-transparent
+}
