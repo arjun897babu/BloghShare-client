@@ -16,7 +16,7 @@ const Pagination: React.FC<PaginationProps> = ({ pageNumber, changePage, totalPa
     }
 
     return (
-        <div className="join">
+        <div className="join mb-5">
             {pageNumber > Math.min(pageNumber, 1) &&
                 <button onClick={(e) => change(e, 'prev')} className="join-item btn">«</button>
             }

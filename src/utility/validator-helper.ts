@@ -47,8 +47,6 @@ export function handleAxiosError(error: unknown): ApiError {
         break;
     }
 
-    console.error(messge,code);
-
     return createApiError(
       error.status,
       messge,

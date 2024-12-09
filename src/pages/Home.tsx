@@ -47,7 +47,7 @@ function Home() {
 
     return (
         <>
-            <div className="drawer bg-emerald-200 ">
+            <div className="drawer bg-emerald-200 mb-5 ">
                 <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content flex flex-col">
                     {/* Navbar */}

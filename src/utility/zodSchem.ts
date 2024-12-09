@@ -40,16 +40,29 @@ export const signupSchema = z
   });
 
 export const blogSchema = z.object({
-  content: z.string().nonempty(errorMessage("content")),
-  title: z.string().nonempty(errorMessage("title")),
+  content: z
+    .string()
+    .trim()
+    .nonempty(errorMessage("content"))
+    .regex(/^.{50,}/, {
+      message: "Content must be at least 50 characters.",
+    }),
+  title: z
+    .string()
+    .trim()
+    .nonempty(errorMessage("title"))
+    .regex(/^.{20,100}$/, { message: "Enter character between 20 to 100" }),
   file: z.union([
     z.object({
       publicId: z.string(),
       url: z
         .string()
-        .regex(/^https:\/\/res\.cloudinary\.com\/.*\.(jpeg|png|gif|webp|jpg)$/i, {
-          message: "invalid image url",
-        }),
+        .regex(
+          /^https:\/\/res\.cloudinary\.com\/.*\.(jpeg|png|gif|webp|jpg)$/i,
+          {
+            message: "invalid image url",
+          }
+        ),
     }),
     z
       .instanceof(File)
@@ -73,10 +86,11 @@ export const blogSchema = z.object({
           return true;
         },
         {
-          message: errorMessage('image')+"  supported types (jpeg, png, gif, webp,jpg)",
+          message:
+            errorMessage("image") +
+            "  supported types (jpeg, png, gif, webp,jpg)",
         }
-      )
-      
+      ),
   ]),
 });
 

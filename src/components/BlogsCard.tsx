@@ -36,13 +36,14 @@ const BlogCard: FC<IBlogCardListpProps> = ({ blogData, deleteCB }) => {
         try {
             const imageId = blogData.file && 'publicId' in blogData.file ? blogData.file.publicId : undefined
 
-            const response = (await serverInstance.delete<IResponse>(endPoint.editBlog(blogData.uId), { params: imageId })).data
+            const response = (await serverInstance.delete<IResponse>(endPoint.editBlog(blogData.uId), { params: { imageId } })).data
             if (response.status === ResponseStatus.SUCCESS) {
                 showToast(ResponseStatus.SUCCESS, response.message)
                 deleteCB(blogData.uId)
             }
 
         } catch (error) {
+            console.error(error)
             handleApiError(error)
         } finally {
             setLoading(false)
@@ -74,7 +75,15 @@ const BlogCard: FC<IBlogCardListpProps> = ({ blogData, deleteCB }) => {
                 <h2 className="card-title capitalize font-bold">{blogData.title}</h2>
                 {/* context with text ellipse */}
                 <p className="truncate  text-sm font-light leading-4">{blogData.content}</p>
-                <div className="card-actions justify-end">
+                <div className="card-actions justify-between items-center mt-1 ">
+                    <div className="font-bold capitalize flex flex-col gap-1">
+                        <span className="">
+                            {blogData.user.name}
+                        </span>
+                        <span className="font-thin text-xs">
+                            published {new Date(blogData.createdAt).toLocaleDateString('en-IN', { month: 'long', day: '2-digit', year: 'numeric' })}
+                        </span>
+                    </div>
                     <button className="btn btn-neutral">
                         <Link to={`/blog/${blogData.uId}`}>Read Now ...</Link>
                     </button>

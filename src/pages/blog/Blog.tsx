@@ -45,7 +45,7 @@ const Blog = () => {
                     <div className="card-title font-extrabold mb-12 capitalize  tracking-wider text-3xl sm:text-4xl  lg:text-6xl">
                         {data?.title}
                     </div>
-                    <div className="mb-8 sm:mb-0 " > 
+                    <div className="mb-8 sm:mb-0 " >
                         <figure  >
                             <img
                                 className="rounded "
@@ -58,11 +58,12 @@ const Blog = () => {
                 <div className="mx-auto max-w-screen-xl px-4 md:px-8">
                     <div className="grid gap-8 md:grid-cols-2 lg:gap-12">
                         <div className="bottom-left flex gap-8 md:pt-8">
-                            <span className="badge badge-accent capitalize">
-                                {data?.user?.name}
+                            <span className="capitalize font-bold text-lg bg-gradient-to-r from-gray-500 to-teal-700 bg-clip-text text-transparent ">
+                                @ {data?.user?.name}
                             </span>
-                            <span className="badge badge-neutral">
-                                {new Date(data.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                            |
+                            <span className="bg-gradient-to-r from-slate-400 to-gray-900 bg-clip-text text-transparent font-bold capitalize p-1">
+                                published {new Date(data.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })}
                             </span>
                         </div>
 

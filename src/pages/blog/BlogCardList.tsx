@@ -82,7 +82,7 @@ const BlogCardList = () => {
     return (
         <>
 
-            <div className={`${isHome ? 'mt-28' : 'mt-2'}`}>
+            <div className={`${isHome ? 'mt-28' : 'mt-2'} mb-5`}>
                 <h1 className="text-2xl xs:text-5xl text-center font-extrabold capitalize pb-4 title">
                     {isHome ? " Updates, ideas, and resources" : 'My Blogs'}
                 </h1>
