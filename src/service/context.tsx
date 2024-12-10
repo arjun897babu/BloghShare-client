@@ -58,13 +58,13 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
   }, 2000), []);
 
   function onSearch(st: string) {
-    debouncedSearch(st);
+    debouncedSearch(st)
     setDSearch(st)
   }
 
   useEffect(() => {
     localStorage.setItem(VITE_APP, JSON.stringify(userState))
-  }, [userState])
+  }, [userState]);
 
   return (
     <UserContext.Provider value={{ userState, setUserState, showToast, toast, onSearch, search, dSearch }}>

@@ -22,7 +22,14 @@ function Home() {
         } else {
             setIsHome(true)
         }
-    }, [location.pathname])
+    }, [location.pathname]);
+
+    useEffect(() => {
+        return () => {
+            onSearch(''); 
+        };
+    },[location.pathname]);
+    
 
     async function logout(e: MouseEvent<HTMLButtonElement>) {
         setLoading(true)
@@ -47,7 +54,7 @@ function Home() {
 
     return (
         <>
-            <div className="drawer bg-emerald-200 mb-5 ">
+            <div className="drawer bg-gradient-to-bl from-emerald-500 to-emerald-300 mb ">
                 <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content flex flex-col">
                     {/* Navbar */}
@@ -135,13 +142,13 @@ function Home() {
             <section className={`${isHome ? 'mx-auto max-w-screen-2xl px-4 md:px-8' : 'hidden'}`}>
                 <div className="mb-8 flex flex-wrap justify-between md:mb-16">
                     {/* left section with heading */}
-                    <div className=" xs:relative top-16 mb-6 flex w-full flex-col justify-center sm:mb-12 lg:mb-0 xs:w-5/12 lg:pb-24 lg:pt-48">
-                        <h1 className="mt-4 xs:mt-0 mb-4 text-3xl font-bold text-black xs:text-3xl md:mb-8 title">
+                    <div className=" xs:relative top-16 lg:top-0 mb-6 flex w-full flex-col justify-center sm:mb-12 lg:mb-0 xs:w-5/12 lg:pb-24 lg:pt-48">
+                        <h1 className="mt-4 xs:mt-0 mb-4 text-3xl font-bold text-black md:mb-8 title">
                             Where Ideas Meet Words<br />Conversations Begin.
                         </h1>
-                        <p className="max-w-md leading-relaxed text-gray-500 xl:text-lg">
-                            Engage with your readers' emotions and inspire them to make positive changes in their lives and habits.
-                        </p>
+                        <i className="max-w-md leading-loose font-semibold text-gray-500 xl:text-lg">
+                           "Engage with your readers' emotions and inspire them to make positive changes in their lives and habits.""
+                        </i>
                     </div>
 
                     {/* right section with images */}
@@ -151,7 +158,7 @@ function Home() {
                                 src="https://www.webnode.com/blog/wp-content/uploads/2019/04/blog2.png"
                                 loading="lazy"
                                 alt="Blog Images (Stock Photo)"
-                                className="h-full w-full object-cover"
+                                className="h-full w-full object-fill "
                             />
                         </div>
 
@@ -159,8 +166,8 @@ function Home() {
                             <img
                                 src="https://www.ryrob.com/wp-content/uploads/2022/02/iStock-956891332.jpg"
                                 loading="lazy"
-                                alt="Photo by Manny Moreno"
-                                className="h-full w-full object-cover"
+                                alt="Blog Images (Stock Photo)"
+                                className="h-full w-full object-fill"
                             />
                         </div>
                     </div>
