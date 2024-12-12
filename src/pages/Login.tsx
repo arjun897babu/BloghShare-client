@@ -1,18 +1,19 @@
 import { Link, useNavigate } from "react-router-dom"
-import Password from "../../components/Password"
-import Label from "../../components/Label"
-import Input from "../../components/Input"
-import { ILogin, LoginObj } from "./types"
-import { useZodForm } from "../../custom hook/UseZodForm"
-import { loginSchema, logniFormSchemaType } from "../../utility/zodSchem"
-import ErrorDiv from "../../components/ErrorDiv"
-import useErrorObject from "../../custom hook/useErrorObject"
-import { authInstance, endPoint } from "../../service/api"
-import { ResponseStatus } from "../../utility/enum"
-import { useUser } from "../../custom hook/useUser"
+import Password from "../components/Password"
+import Label from "../components/Label"
+import Input from "../components/Input"
+ import { useZodForm } from "../custom hook/UseZodForm"
+import { loginSchema, logniFormSchemaType } from "../utility/zodSchem"
+import ErrorDiv from "../components/ErrorDiv"
+import useErrorObject from "../custom hook/useErrorObject"
+import { authInstance } from "../service/api"
+import { BtnSize, InputText, LoaderType, ResponseStatus } from "../constants/enum"
+import { useUser } from "../custom hook/useUser"
 import { useEffect, useState } from "react"
-import { ButtonLoader } from "../../components/ButtonLoader"
-import Toast from "../../components/Toast"
+import { ButtonLoader } from "../components/ButtonLoader"
+import Toast from "../components/Toast"
+import { ILogin, LoginObj } from "../utility/types"
+import { apiEndPoint } from "../constants/endpoints"
 
 
 function Login() {
@@ -39,7 +40,7 @@ function Login() {
     async function onSubmit(data: logniFormSchemaType) {
         setLoading(true)
         try {
-            const response = (await authInstance.post<ILogin>(endPoint.login, data)).data
+            const response = (await authInstance.post<ILogin>(apiEndPoint.login, data)).data
             if (response.status === ResponseStatus.SUCCESS) {
                 const { user, token } = response.data
                 setUserState((prev) => ({
@@ -74,7 +75,7 @@ function Login() {
                         <div className="flex flex-col gap-4 p-4 md:p-8">
                             <div className="form-control relative ">
                                 <Label label="email" />
-                                <Input text="email" {...register('email')} />
+                                <Input text={InputText.EMAIL} {...register('email')} />
                                 {errors && errors.email?.message && <ErrorDiv message={errors.email.message} />}
                             </div>
                             <div className="form-control relative ">
@@ -82,7 +83,7 @@ function Login() {
                                 <Password text="password" {...register('password')} />
                                 {errors && errors.password?.message && <ErrorDiv message={errors.password.message} />}
                             </div>
-                            <button className={`btn btn-neutral mt-5`} type="submit">{loading ? <ButtonLoader btnSize="sm" loader="spinner" /> : 'Log in'}</button>
+                            <button className={`btn btn-neutral mt-5`} type="submit">{loading ? <ButtonLoader btnSize={BtnSize.SM} loader={LoaderType.SPINNER} /> : 'Log in'}</button>
                             {/* <progress className="progress "></progress> */}
                             <div className="divider"></div>
                         </div>

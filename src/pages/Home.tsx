@@ -2,12 +2,13 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import appLogo from '/blogshareIcon.png'
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
 import { useUser } from '../custom hook/useUser'
-import { endPoint, serverInstance } from '../service/api'
+import { serverInstance } from '../service/api'
 import { IResponse } from '../utility/types'
-import { ResponseStatus } from '../utility/enum'
-import { userInitObj, VITE_APP } from '../service/context'
+import { BtnSize, LoaderType, ResponseStatus } from '../constants/enum'
+import { userInitObj } from '../service/context'
 import { ButtonLoader } from '../components/ButtonLoader'
 import useErrorObject from '../custom hook/useErrorObject'
+import { apiEndPoint, VITE_APP } from '../constants/endpoints'
 function Home() {
     const { setUserState, onSearch, dSearch, userState } = useUser()
     const handleApiError = useErrorObject()
@@ -26,16 +27,16 @@ function Home() {
 
     useEffect(() => {
         return () => {
-            onSearch(''); 
+            onSearch('');
         };
-    },[location.pathname]);
-    
+    }, [location.pathname]);
+
 
     async function logout(e: MouseEvent<HTMLButtonElement>) {
         setLoading(true)
         e.preventDefault()
         try {
-            const response = (await serverInstance.post<IResponse>(endPoint.logout)).data
+            const response = (await serverInstance.post<IResponse>(apiEndPoint.logout)).data
             if (response.status === ResponseStatus.SUCCESS) {
                 localStorage.removeItem(VITE_APP);
                 setUserState(userInitObj);
@@ -114,7 +115,7 @@ function Home() {
                                             {
                                                 loading ?
                                                     (
-                                                        <ButtonLoader btnSize='sm' loader='spinner' />
+                                                        <ButtonLoader btnSize={BtnSize.SM} loader={LoaderType.SPINNER} />
                                                     )
                                                     :
                                                     (
@@ -142,32 +143,30 @@ function Home() {
             <section className={`${isHome ? 'mx-auto max-w-screen-2xl px-4 md:px-8' : 'hidden'}`}>
                 <div className="mb-8 flex flex-wrap justify-between md:mb-16">
                     {/* left section with heading */}
-                    <div className=" xs:relative top-16 lg:top-0 mb-6 flex w-full flex-col justify-center sm:mb-12 lg:mb-0 xs:w-5/12 lg:pb-24 lg:pt-48">
+                    <div className=" xs:relative top-16 lg:top-0 mb-6 flex w-full flex-col justify-center sm:mb-12 lg:mb-0  sm:w-2/5 lg:pb-24 lg:pt-48">
                         <h1 className="mt-4 xs:mt-0 mb-4 text-3xl font-bold text-black md:mb-8 title">
-                            Where Ideas Meet Words<br />Conversations Begin.
+                            Where Ideas Meet Words Conversations Begin.
                         </h1>
                         <i className="max-w-md leading-loose font-semibold text-gray-500 xl:text-lg">
-                           "Engage with your readers' emotions and inspire them to make positive changes in their lives and habits.""
+                            "Engage with your readers' emotions and inspire them to make positive changes in their lives and habits."
                         </i>
                     </div>
 
                     {/* right section with images */}
-                    <div className="flex w-full md:mb-16 xs:w-1/2 mt-10">
+                    <div className="flex w-full md:mb-16 sm:w-3/5 mt-10">
                         <div className="relative left-12 top-12 -ml-10 overflow-hidden rounded-lg shadow-lg md:left-16 md:top-16 lg:ml-0">
                             <img
                                 src="https://www.webnode.com/blog/wp-content/uploads/2019/04/blog2.png"
-                                loading="lazy"
                                 alt="Blog Images (Stock Photo)"
-                                className="h-full w-full object-fill "
+                                className="h-full w-96 object-cover "
                             />
                         </div>
 
                         <div className="overflow-hidden z-10 rounded-lg shadow-lg">
                             <img
                                 src="https://www.ryrob.com/wp-content/uploads/2022/02/iStock-956891332.jpg"
-                                loading="lazy"
                                 alt="Blog Images (Stock Photo)"
-                                className="h-full w-full object-fill"
+                                className="h-full w-96 object-cover"
                             />
                         </div>
                     </div>

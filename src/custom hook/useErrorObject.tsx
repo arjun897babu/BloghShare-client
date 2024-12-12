@@ -1,10 +1,10 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { handleAxiosError, isApiError } from "../utility/validator-helper";
 import { useUser } from "./useUser";
 import { userInitObj } from "../service/context";
 import { ApiError } from "../utility/types";
 import { HttpStatusCode } from "axios";
-import { ResponseStatus } from "../utility/enum";
+import { ResponseStatus } from "../constants/enum";
+import { handleAxiosError, isApiError } from "../utility/api-error-helper";
 
 const useErrorObject = (setError?: (key: string, message: string) => void) => { //pass a setError function as a callback
 

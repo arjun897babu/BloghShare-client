@@ -1,16 +1,13 @@
 import { FC, MouseEvent, useEffect, useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { IResponse, SingleBlog } from "../utility/types"
-import { serverInstance, endPoint } from "../service/api";
-import { Action, ResponseStatus } from "../utility/enum";
+import { IBlogCardListpProps, IResponse } from "../utility/types"
+import { serverInstance, } from "../service/api";
+import { Action, BtnSize, LoaderType, ResponseStatus } from "../constants/enum";
 import useErrorObject from "../custom hook/useErrorObject";
 import { useUser } from "../custom hook/useUser";
 import { ButtonLoader } from "./ButtonLoader";
-
-export type IBlogCardListpProps = {
-    blogData: SingleBlog;
-    deleteCB: (blogId: string) => void
-}
+import { apiEndPoint, blogSharePath } from "../constants/endpoints";
+import { dateFormatter } from "../utility/formatting";
 
 const BlogCard: FC<IBlogCardListpProps> = ({ blogData, deleteCB }) => {
     const { showToast } = useUser()
@@ -28,7 +25,7 @@ const BlogCard: FC<IBlogCardListpProps> = ({ blogData, deleteCB }) => {
     }, [location.pathname])
 
     function editBlog() {
-        navigate('/write', { state: { blogData: blogData } })
+        navigate(blogSharePath.blogEdior, { state: { blogData: blogData } })
     }
 
     async function deleteBlog() {
@@ -36,14 +33,13 @@ const BlogCard: FC<IBlogCardListpProps> = ({ blogData, deleteCB }) => {
         try {
             const imageId = blogData.file && 'publicId' in blogData.file ? blogData.file.publicId : undefined
 
-            const response = (await serverInstance.delete<IResponse>(endPoint.editBlog(blogData.uId), { params: { imageId } })).data
+            const response = (await serverInstance.delete<IResponse>(apiEndPoint.editBlog(blogData.uId), { params: { imageId } })).data
             if (response.status === ResponseStatus.SUCCESS) {
                 showToast(ResponseStatus.SUCCESS, response.message)
                 deleteCB(blogData.uId)
             }
 
         } catch (error) {
-            console.error(error)
             handleApiError(error)
         } finally {
             setLoading(false)
@@ -63,10 +59,12 @@ const BlogCard: FC<IBlogCardListpProps> = ({ blogData, deleteCB }) => {
 
     return (
 
+
         <div className="card card-compact bg-base-100 shadow-xl">
             <figure>
                 <img
                     src={blogData.file?.url}
+                    loading="lazy"
                     alt={blogData.file?.publicId}
                 />
             </figure>
@@ -81,7 +79,7 @@ const BlogCard: FC<IBlogCardListpProps> = ({ blogData, deleteCB }) => {
                             {blogData.user.name}
                         </span>
                         <span className="font-thin text-xs">
-                            published {new Date(blogData.createdAt).toLocaleDateString('en-IN', { month: 'long', day: '2-digit', year: 'numeric' })}
+                            published {dateFormatter(blogData.createdAt)}
                         </span>
                     </div>
                     <button className="btn btn-neutral">
@@ -94,7 +92,7 @@ const BlogCard: FC<IBlogCardListpProps> = ({ blogData, deleteCB }) => {
                 <div className={`absolute right-2 top-2 `}>
                     {
                         loading ?
-                            <ButtonLoader btnSize="wide" loader="spinner" />
+                            <ButtonLoader btnSize={BtnSize.WIDE} loader={LoaderType.SPINNER} />
                             :
                             <>
                                 <button onClick={(e) => onAction(e, Action.DELETE)} className="delete opacity-25 hover:opacity-100 transition-opacity ease-in-out">

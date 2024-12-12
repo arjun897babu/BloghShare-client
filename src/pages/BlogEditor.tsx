@@ -1,19 +1,18 @@
-import { useEffect, useState } from "react"
-import useErrorObject from "../../../custom hook/useErrorObject"
-import { useZodForm } from "../../../custom hook/UseZodForm"
-import { BlogFormSchemaType, blogSchema } from "../../../utility/zodSchem"
-import Input from "../../../components/Input"
-import Label from "../../../components/Label"
-import { BlogInitialState } from "./types"
-import ImageUpload from "../../../components/ImageUpload"
-import ErrorDiv from "../../../components/ErrorDiv"
-import { serverInstance, endPoint } from "../../../service/api"
-import { useLocation, useNavigate } from "react-router-dom"
-import { Blog, IBlogCU } from "../../../utility/types"
-import { ResponseStatus } from "../../../utility/enum"
-import { ButtonLoader } from "../../../components/ButtonLoader"
-import { useUser } from "../../../custom hook/useUser"
-
+import { lazy, useEffect, useState } from "react"
+import { useUser } from "../custom hook/useUser";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ButtonLoader } from "../components/ButtonLoader";
+import ErrorDiv from "../components/ErrorDiv";
+const ImageUpload = lazy(() => import("../components/ImageUpload"))
+import Input from "../components/Input";
+import Label from "../components/Label";
+import { BtnSize, InputText, LoaderType, ResponseStatus } from "../constants/enum";
+import useErrorObject from "../custom hook/useErrorObject";
+import { useZodForm } from "../custom hook/UseZodForm";
+import { serverInstance } from "../service/api";
+import { Blog, BlogInitialState, IBlogCU } from "../utility/types";
+import { blogSchema, BlogFormSchemaType } from "../utility/zodSchem";
+import { apiEndPoint } from "../constants/endpoints";
 const BlogEditor = () => {
     const { showToast } = useUser()
     const location = useLocation();
@@ -42,9 +41,9 @@ const BlogEditor = () => {
                     ? blogData.file.publicId
                     : undefined
 
-                response = (await serverInstance.put<IBlogCU>(endPoint.editBlog(blogData.uId), data, { headers: { "Content-Type": 'multipart/form-data' }, params: { imageId } })).data
+                response = (await serverInstance.put<IBlogCU>(apiEndPoint.editBlog(blogData.uId), data, { headers: { "Content-Type": 'multipart/form-data' }, params: { imageId } })).data
             } else {
-                response = (await serverInstance.post<IBlogCU>(endPoint.write, data, { headers: { "Content-Type": 'multipart/form-data' } })).data
+                response = (await serverInstance.post<IBlogCU>(apiEndPoint.write, data, { headers: { "Content-Type": 'multipart/form-data' } })).data
             }
 
             if (response.status === ResponseStatus.SUCCESS) {
@@ -89,7 +88,7 @@ const BlogEditor = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-xs sm:max-w-lg lg:max-w-2xl border p-2 rounded">
                     <div className="form-control relative mb-3">
                         <Label label="title" />
-                        <Input text="title" {...register('title')} />
+                        <Input text={InputText.TITLE} {...register('title')} />
                         {errors && errors.title?.message && <ErrorDiv message={errors.title.message} />}
                     </div>
                     <div className="form-control relative mb-3 ">
@@ -107,7 +106,7 @@ const BlogEditor = () => {
                     <div className="float-right">
                         <button className="btn  bg-emerald-500 text-white hover:bg-emerald-600 xs:btn-wide uppercase " type="submit">
                             {
-                                loading ? <ButtonLoader btnSize="full" loader="progress" />
+                                loading ? <ButtonLoader btnSize={BtnSize.FULL} loader={LoaderType.PROGRESS} />
                                     : !blogData ? 'post' : 'update'
                             }
                         </button>

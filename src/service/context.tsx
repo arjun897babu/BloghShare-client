@@ -1,10 +1,8 @@
 import { createContext, FC, ReactNode, useCallback, useEffect, useState } from "react"
 import { IToast, User } from "../utility/types"
-import { ResponseStatus } from "../utility/enum";
+import { ResponseStatus } from "../constants/enum";
 import { debounce } from "./api";
-export const {
-  VITE_APP
-} = import.meta.env
+import { VITE_APP } from "../constants/endpoints";
 
 export const userInitObj: Pick<User, 'email' | 'isAuthed' | 'name' | 'token' | 'uId'> = {
   email: '',

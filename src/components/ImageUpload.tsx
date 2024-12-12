@@ -1,8 +1,6 @@
 import React, { MouseEvent, useEffect, useRef, useState } from "react";
-type ImageUploadProps = {
-    changeImage: (file: File) => void;
-    url?: string
-}
+import { ImageUploadProps } from "../utility/types";
+
 const ImageUpload: React.FC<ImageUploadProps> = ({ changeImage, url }) => {
 
     const [imageSrc, setImageSrc] = useState<string | null>(null);

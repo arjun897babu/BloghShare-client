@@ -1,14 +1,15 @@
-import React, { useEffect, useRef, useState } from "react"
-import Pagination from "../../components/Pagination"
+import React, { Suspense, useEffect, useRef, useState } from "react"
+import Pagination from "./Pagination"
 import { useLocation } from "react-router-dom";
-import { serverInstance, endPoint } from "../../service/api";
-import { IFilter, IGetAllBlogs, SingleBlog } from "../../utility/types";
-import { ResponseStatus } from "../../utility/enum";
-import useErrorObject from "../../custom hook/useErrorObject";
-import Toast from "../../components/Toast";
-import { useUser } from "../../custom hook/useUser";
-import { ButtonLoader } from "../../components/ButtonLoader";
-const BlogCard = React.lazy(() => import('../../components/BlogsCard'))
+import { serverInstance } from "../service/api";
+import { IFilter, IGetAllBlogs, SingleBlog } from "../utility/types";
+import { BtnSize, LoaderType, ResponseStatus } from "../constants/enum";
+import useErrorObject from "../custom hook/useErrorObject";
+import Toast from "./Toast";
+import { useUser } from "../custom hook/useUser";
+import { ButtonLoader } from "./ButtonLoader";
+import { apiEndPoint } from "../constants/endpoints";
+const BlogCard = React.lazy(() => import('./BlogsCard'))
 
 
 const BlogCardList = () => {
@@ -35,7 +36,7 @@ const BlogCardList = () => {
             const params: Partial<IFilter> = { pageNumber, search };
             search.trim() ? (params.search = search) : delete params.search;
 
-            const url = location.pathname === '/' ? endPoint.blogs : endPoint.getUserBlog;
+            const url = location.pathname === '/' ? apiEndPoint.blogs : apiEndPoint.getUserBlog;
             await new Promise(resolve => setTimeout(resolve, 2000))
             const response = (await serverInstance.get<IGetAllBlogs>(url, { params })).data
             if (response.status === ResponseStatus.SUCCESS) {
@@ -77,7 +78,7 @@ const BlogCardList = () => {
         })
     }
     if (loading) {
-        return <ButtonLoader btnSize="full" loader="progress" />
+        return <ButtonLoader btnSize={BtnSize.FULL} loader={LoaderType.PROGRESS} />
     }
     return (
         <>
@@ -119,7 +120,9 @@ const BlogCardList = () => {
                         </svg>) :
                         (<div ref={blogDivListRef} className="w-full grid grid-cols-1 sm:grid-cols-3  p-4 gap-6">
                             {blogs && blogs.map((blog) => (
-                                <BlogCard key={blog.uId} blogData={blog} deleteCB={deleteCB} />
+                                <Suspense fallback={<ButtonLoader btnSize={BtnSize.FULL} loader={LoaderType.SPINNER} />}>
+                                    <BlogCard key={blog.uId} blogData={blog} deleteCB={deleteCB} />
+                                </Suspense>
                             ))}
                         </div>)
                 }

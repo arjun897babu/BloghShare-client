@@ -1,18 +1,6 @@
 import axios, { HttpStatusCode } from "axios";
-import { CustomError } from "../utility/validator-helper";
-
-const { VITE_API_ROUTE, VITE_APP } = import.meta.env;
-
-export const endPoint = {
-  login: "/auth/login",
-  signup: "/auth/signup",
-  logout: "/auth/logout",
-  blogs: "/blogs",
-  singleBlog: (blogId: string) => `/blogs/blog/${blogId}`,
-  write: "/blogs/user/blog", //create specif to user
-  getUserBlog: "/blogs/user/blog",
-  editBlog: (blogId: string) => `/blogs/user/${blogId}`, //edit and delete a specif blog
-};
+import { CustomError } from "../utility/api-error-helper";
+import { VITE_API_ROUTE, VITE_APP } from "../constants/endpoints";
 
 const serverInstance = axios.create({
   withCredentials: true,

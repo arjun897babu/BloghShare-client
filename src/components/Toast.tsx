@@ -1,5 +1,5 @@
 import React from "react";
-import { ResponseStatus } from "../utility/enum";
+import { ResponseStatus } from "../constants/enum";
 import { IToast } from "../utility/types";
 
 const Toast: React.FC<IToast> = ({ status,message }) => {

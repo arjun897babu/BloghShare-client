@@ -1,8 +1,5 @@
 import { FC } from "react"
-
-type ErrorDivProp = {
-    message: string
-}
+import { ErrorDivProp } from "../utility/types"
 
 const ErrorDiv: FC<ErrorDivProp> = ({ message }) => {
     return <small

@@ -1,30 +1,27 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { endPoint, serverInstance } from "../../service/api"
-import { BlogResponse, SingleBlog } from "../../utility/types"
-import { ResponseStatus } from "../../utility/enum"
+import { serverInstance } from "../service/api"
+import { BlogResponse, SingleBlog } from "../utility/types"
+import {  ResponseStatus } from "../constants/enum"
+import { apiEndPoint } from "../constants/endpoints"
+import useErrorObject from "../custom hook/useErrorObject"
 
 const Blog = () => {
     const { blogId } = useParams()
-    const [loading, setLoading] = useState(false)
-    console.log(loading);
+    const handleApiError = useErrorObject()
     const [data, setData] = useState<SingleBlog | null>(null)
     const navigate = useNavigate()
     async function fetchSingleBlog() {
-        setLoading(true)
         if (!blogId) {
             return
         }
         try {
-            const response = (await serverInstance.get<BlogResponse>(endPoint.singleBlog(blogId))).data
+            const response = (await serverInstance.get<BlogResponse>(apiEndPoint.singleBlog(blogId))).data
             if (response.status === ResponseStatus.SUCCESS) {
                 setData(response.data.blog)
-                console.log(response.data.blog)
             }
         } catch (error) {
-            console.log(error)
-        } finally {
-            setLoading(false)
+            handleApiError(error)
         }
     }
     useEffect(() => {
@@ -35,6 +32,7 @@ const Blog = () => {
             navigate('/')
         }
     }, [blogId])
+
 
     if (!data) return null
 

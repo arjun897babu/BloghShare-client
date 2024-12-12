@@ -1,18 +1,19 @@
 import { Link, useNavigate } from "react-router-dom";
-import Password from "../../components/Password";
-import Label from "../../components/Label";
-import Input from "../../components/Input";
-import { ICreateUser, signupObj } from "./types";
-import { useZodForm } from "../../custom hook/UseZodForm";
-import { signUpFormSchemaType, signupSchema } from "../../utility/zodSchem";
-import ErrorDiv from "../../components/ErrorDiv";
-import { authInstance, endPoint } from "../../service/api";
-import { ResponseStatus } from "../../utility/enum";
-import useErrorObject from "../../custom hook/useErrorObject";
-import { useUser } from "../../custom hook/useUser";
+import Password from "../components/Password";
+import Label from "../components/Label";
+import Input from "../components/Input";
+import { useZodForm } from "../custom hook/UseZodForm";
+import { signUpFormSchemaType, signupSchema } from "../utility/zodSchem";
+import ErrorDiv from "../components/ErrorDiv";
+import { authInstance } from "../service/api";
+import {  BtnSize, InputText, LoaderType, ResponseStatus } from "../constants/enum";
+import useErrorObject from "../custom hook/useErrorObject";
+import { useUser } from "../custom hook/useUser";
 import { useEffect, useState } from "react";
-import Toast from "../../components/Toast";
-import { ButtonLoader } from "../../components/ButtonLoader";
+import Toast from "../components/Toast";
+import { ButtonLoader } from "../components/ButtonLoader";
+import { ICreateUser, signupObj } from "../utility/types";
+import { apiEndPoint } from "../constants/endpoints";
 
 
 function Signup() {
@@ -32,7 +33,7 @@ function Signup() {
     const onSubmit = async (data: signUpFormSchemaType) => {
         setLoading(true)
         try {
-            const response = (await authInstance.post<ICreateUser>(endPoint.signup, data)).data
+            const response = (await authInstance.post<ICreateUser>(apiEndPoint.signup, data)).data
             if (response.status === ResponseStatus.SUCCESS) {
                 navigate('/login')
             }
@@ -67,12 +68,12 @@ function Signup() {
                     <div className="flex flex-col gap-4 p-4 md:p-8">
                         <div className="form-control relative">
                             <Label label="name" />
-                            <Input text="text" {...register('name')} />
+                            <Input text={InputText.TEXT} {...register('name')} />
                             {errors && errors.name?.message && <ErrorDiv message={errors.name.message} />}
                         </div>
                         <div className="form-control relative">
                             <Label label="Email" />
-                            <Input text="email" {...register('email')} />
+                            <Input text={InputText.EMAIL} {...register('email')} />
                             {errors && errors.email?.message && <ErrorDiv message={errors.email.message} />}
                         </div>
                         <div className="form-control relative">
@@ -88,7 +89,7 @@ function Signup() {
                         </div>
 
                         <button className="btn btn-neutral w-full mt-4" type="submit">
-                            {loading ? <ButtonLoader btnSize="sm" loader="spinner" /> : 'Sign Up'}
+                            {loading ? <ButtonLoader btnSize={BtnSize.SM} loader={LoaderType.SPINNER} /> : 'Sign Up'}
                         </button>
                         <div className="divider my-4"></div>
                     </div>
