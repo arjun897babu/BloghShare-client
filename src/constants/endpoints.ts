@@ -4,6 +4,7 @@ export const apiEndPoint = Object.freeze({
     login: "/auth/login",
     signup: "/auth/signup",
     logout: "/auth/logout",
+    refresh:"/auth/refresh",
     blogs: "/blogs",
     singleBlog: (blogId: string) => `/blogs/blog/${blogId}`,
     write: "/blogs/user/blog", //create specif to user

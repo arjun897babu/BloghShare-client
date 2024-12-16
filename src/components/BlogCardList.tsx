@@ -118,10 +118,10 @@ const BlogCardList = () => {
                                 </filter>
                             </defs>
                         </svg>) :
-                        (<div ref={blogDivListRef} className="w-full grid grid-cols-1 sm:grid-cols-3  p-4 gap-6">
+                        (<div  ref={blogDivListRef} className="w-full grid grid-cols-1 sm:grid-cols-3  p-4 gap-6">
                             {blogs && blogs.map((blog) => (
-                                <Suspense fallback={<ButtonLoader btnSize={BtnSize.FULL} loader={LoaderType.SPINNER} />}>
-                                    <BlogCard key={blog.uId} blogData={blog} deleteCB={deleteCB} />
+                                <Suspense key={blog.uId} fallback={<ButtonLoader btnSize={BtnSize.FULL} loader={LoaderType.SPINNER} />}>
+                                    <BlogCard  blogData={blog} deleteCB={deleteCB} />
                                 </Suspense>
                             ))}
                         </div>)
